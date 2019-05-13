@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <link rel="stylesheet" href="static/auto_mom_app.css">
+    </head>
+    
+    <body>
+        {% if app_data['loading'] == False %}
+            <div>{{ app_data['loading'] }}</div>
+        {% endif %}
+         
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="row header">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <h2 class="text-center font-weight-bold">
+                            Automated Meeting Minutes Generator
+                        </h2>
+                    </div>
+                </div>
+                <div class="row app-content">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <form method="POST" action="/submit" enctype="multipart/form-data">
+                            <div class="row input-box">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <!--<form method="POST" action="/submit" enctype="multipart/form-data">-->
+                                        <div class="form-group">
+                                            <div>
+                                                <label class="font-weight-bold col-xs-5 col-sm-5 col-md-5 col-lg-5 padding-zero">Recording to be summarized: </label>
+                                                <input class="col-xs-5 col-sm-5 col-md-5 col-lg-5 padding-zero" type="file" name="file_address" value={{ app_data['file_address'].filename }}>
+                                            </div>
+                                            <div>  
+                                                <label class="font-weight-bold col-xs-5 col-sm-5 col-md-5 col-lg-5 padding-zero">File type (mp3, wav, mp4): </label>
+                                                <select class="col-xs-5 col-sm-5 col-md-5 col-lg-5" name="file_type" value={{ app_data['file_type'] }}>
+                                                    <option value="">Select</option>
+                                                    <option value="wav">wav</option>
+                                                    <option value="mp3">mp3</option>
+                                                    <option value="mp4">mp4</option>
+                                                </select>  
+                                            </div>
+                                        </div>
+                                        <input class="btn btn-primary" type="submit" name="process_btn" value="Start">
+                                    <!--</form>-->
+                                </div>
+                            </div>
+                            <div class="row summary-box">
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <div class="line-sep">Summary : {{ app_data['file_address'].filename }}</div>
+                                    
+                                    <div>
+                                        <!--<form method="POST" action="/summary" enctype="multipart/form-data"></form>-->
+                                            <div class="form-group">
+                                                <div>
+                                                    <label class="font-weight-bold col-xs-3 col-sm-3 col-md-3 col-lg-3 padding-zero">Compression Ratio (0-100): </label>
+                                                    <input class="col-xs-3 col-sm-3 col-md-3 col-lg-3 padding-zero" type="number" name="ratio" min="0" max="100" value={{ app_data['ratio'] }}> %
+                                                    <input class="col-xs-3 col-sm-3 col-md-3 col-lg-3 btn btn-primary" type="submit" name="process_btn" value="Go">
+                                                </div>                                           
+                                            </div>  
+                                        <!--</form>-->
+                                    </div>
+                                    <div class="summary-content">{{ app_data['summary'] }}</div>   
+                                </div>
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 preview-box">
+                                    <iframe src={{ url_for('preview', filename = app_data['file_address'].filename)}} width="853" height="480" frameborder="0" allowfullscreen></iframe>  
+                                </div> 
+                            </div>
+                        </form>  
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+    </body>
+
+</html>
